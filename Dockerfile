@@ -1,25 +1,26 @@
-# Use a minimal Ruby image
-FROM ruby:3
+# Use multi-stage builds with a slim Ruby image
+FROM ruby:3-slim as builder
 
-# Install any dependencies (this example may not need it)
-RUN apt-get update && apt-get install -y \
-    libssl-dev \
-    && rm -rf /var/lib/apt/lists/* # Clean up to minimize the image size
+# Install dependencies and create a non-root user
+RUN apt-get update && apt-get install -y libssl-dev \
+    && rm -rf /var/lib/apt/lists/* \
+    && useradd -ms /bin/bash myuser
 
-# Set up a non-root user for better security
-RUN useradd -ms /bin/bash myuser
+# Set up working directory and copy server script
+WORKDIR /app
+COPY ./http_server.rb .
 
-# Switch to the new user
+# Use an even smaller base image for the final stage
+FROM ruby:3-slim
+
+# Copy only necessary files from the builder stage
+COPY --from=builder /usr/local/ /usr/local/
+COPY --from=builder /app /app
+COPY --from=builder /etc/passwd /etc/passwd
+
+# Switch to the new user for better security
 USER myuser
 
-# Working directory for the app
-WORKDIR /app
-
-# Copy the ruby server script to the image
-COPY ./http_server.rb /app/
-
-# Expose the port the server runs on
+# Expose necessary ports and set the default command
 EXPOSE 80
-
-# Command to run the app
-CMD ["ruby", "./http_server.rb"]
+CMD ["ruby", "/app/http_server.rb"]

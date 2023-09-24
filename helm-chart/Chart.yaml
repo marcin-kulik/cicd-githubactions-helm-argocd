@@ -1,0 +1,4 @@
+apiVersion: v2
+name: ruby-server
+description: Helm chart for the Ruby server
+version: 0.1.1
