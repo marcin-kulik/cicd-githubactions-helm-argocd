@@ -17,7 +17,7 @@ loop do
     response_body = if path == "/healthcheck"
                       "OK"
                     else
-                      "Well, hello there! How are you?"
+                      "Well, hello there! How are you??"
                     end
 
     client.write("HTTP/1.1 200 OK\r\n")
