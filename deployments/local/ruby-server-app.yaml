@@ -1,0 +1,28 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: ruby-server
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: git@github.com:marcin-kulik/cicd-githubactions-helm-argocd.git
+    targetRevision: HEAD
+    path: helm-chart
+    helm:
+      chart: "ruby-server-0.1.1"
+      values: |
+        replicaCount: 3
+        image:
+          repository: marcinkulik/ruby-server
+          pullPolicy: IfNotPresent
+          tag: "latest"
+        service:
+          type: LoadBalancer
+          port: 80
+          loadBalancerIP: 192.168.1.50
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: default
+  syncPolicy:
+    automated: {}
