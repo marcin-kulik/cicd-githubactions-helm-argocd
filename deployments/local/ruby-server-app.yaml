@@ -10,7 +10,6 @@ spec:
     targetRevision: HEAD
     path: helm-chart
     helm:
-      chart: "ruby-server-0.1.1"
       values: |
         replicaCount: 3
         image:
