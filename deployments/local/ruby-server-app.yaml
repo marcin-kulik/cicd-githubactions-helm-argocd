@@ -15,7 +15,7 @@ spec:
         image:
           repository: marcinkulik/ruby-server
           pullPolicy: IfNotPresent
-          tag: "13"
+          tag: "14"
         service:
           type: LoadBalancer
           port: 80
