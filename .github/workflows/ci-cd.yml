@@ -6,7 +6,6 @@ on:
       - main
     paths:
       - 'http_server.rb'
-      - '!README.md'
 
 
 jobs:

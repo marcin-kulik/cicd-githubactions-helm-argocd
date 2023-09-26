@@ -3,7 +3,7 @@ replicaCount: 3
 image:
   repository: marcinkulik/ruby-server
   pullPolicy: IfNotPresent
-  tag: ""
+  tag: "11"
 
 
 service:
